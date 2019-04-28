@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Socket.IO Test</title>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Socket.IO Test</h1>
+    <p id="greeting"></p>
+    <input id="new-message" type="text"/>
+    <button id="submit">submit</button>
+    <ul id="message-list"></ul>
+    <script>
+      const socket = io.connect();
+
+      socket.on('greeting', ({message}) => {
+        document.querySelector('#greeting').innerText = message;
+      });
+
+      socket.on('global message posted', ({message}) => {
+        document.querySelector('#message-list').innerHTML += `<li>${message}</li>`;
+      });
+
+      document.querySelector('#submit').onclick = () => {
+        const input = document.querySelector('#new-message');
+
+        socket.emit('post global message', {message: input.value});
+        input.value = "";
+      };
+    </script>
+  </body>
+</html>
